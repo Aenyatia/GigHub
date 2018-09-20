@@ -1,7 +1,7 @@
 ﻿@model GigFormViewModel
 
 <h2>Add a Gig</h2>
-<form asp-action="Create" method="post">
+<form method="post">
 	<div class="form-group">
 		<label asp-for="Venue"></label>
 		<input type="text" class="form-control" asp-for="Venue" placeholder="Enter venue">
@@ -15,8 +15,8 @@
 		<input type="time" class="form-control" asp-for="Time">
 	</div>
 	<div class="form-group">
-		<label asp-for="Genre"></label>
-		<select class="form-control" asp-for="Genre" asp-items="@(new SelectList(Model.Genres, "Id", "Name"))">
+		<label asp-for="GenreId">Genre</label>
+		<select class="form-control" asp-for="GenreId" asp-items="@(new SelectList(Model.Genres, "Id", "Name"))">
 			<option>Select genre</option>
 		</select>
 	</div>
