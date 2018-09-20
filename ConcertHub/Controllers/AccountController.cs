@@ -10,10 +10,10 @@ namespace ConcertHub.Controllers
 	[Authorize]
 	public class AccountController : Controller
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
+		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly SignInManager<ApplicationUser> _signInManager;
 
-		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -33,7 +33,7 @@ namespace ConcertHub.Controllers
 			if (!ModelState.IsValid)
 				return View(viewModel);
 
-			var user = new User
+			var user = new ApplicationUser
 			{
 				UserName = viewModel.UserName,
 				Email = viewModel.Email

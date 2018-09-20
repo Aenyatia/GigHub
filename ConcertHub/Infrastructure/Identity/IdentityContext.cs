@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConcertHub.Infrastructure.Identity
 {
-	public class IdentityContext : IdentityDbContext<User>
+	public class IdentityContext : IdentityDbContext<ApplicationUser>
 	{
 		public IdentityContext(DbContextOptions<IdentityContext> options)
 			: base(options)

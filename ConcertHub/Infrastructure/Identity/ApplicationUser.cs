@@ -2,7 +2,7 @@
 
 namespace ConcertHub.Infrastructure.Identity
 {
-	public class User : IdentityUser
+	public class ApplicationUser : IdentityUser
 	{
 	}
 }

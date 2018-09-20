@@ -1,5 +1,4 @@
-﻿using ConcertHub.Infrastructure.Identity;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ConcertHub.Models
@@ -9,7 +8,7 @@ namespace ConcertHub.Models
 		public int Id { get; set; }
 
 		[Required]
-		public User Artist { get; set; }
+		public string ArtistId { get; set; }
 
 		public DateTime DateTime { get; set; }
 
@@ -18,6 +17,7 @@ namespace ConcertHub.Models
 		public string Venue { get; set; }
 
 		[Required]
+		public int GenreId { get; set; }
 		public Genre Genre { get; set; }
 	}
 }

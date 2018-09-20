@@ -4,6 +4,7 @@ using ConcertHub.Infrastructure.Identity;
 using ConcertHub.Models;
 using ConcertHub.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -14,12 +15,12 @@ namespace ConcertHub.Controllers
 	public class GigsController : Controller
 	{
 		private readonly ConcertContext _context;
-		private readonly IdentityContext _identityContext;
+		private readonly UserManager<ApplicationUser> _userManager;
 
-		public GigsController(ConcertContext context, IdentityContext identityContext)
+		public GigsController(ConcertContext context, UserManager<ApplicationUser> userManager)
 		{
 			_context = context;
-			_identityContext = identityContext;
+			_userManager = userManager;
 		}
 
 		[HttpGet]
@@ -33,14 +34,13 @@ namespace ConcertHub.Controllers
 		[HttpPost]
 		public IActionResult Create(GigFormViewModel viewModel)
 		{
-			var artist = _identityContext.Users.Single(u => u.Id == GetCurrentUserId());
-			var genre = _context.Genres.Single(g => g.Id == viewModel.GenreId);
+			var artist = _userManager.Users.Single(u => u.Id == GetUserId());
 
 			var gig = new Gig
 			{
-				Artist = artist,
+				ArtistId = artist.Id,
 				DateTime = DateTime.Parse($"{viewModel.Date} {viewModel.Time}"),
-				Genre = genre,
+				GenreId = viewModel.GenreId,
 				Venue = viewModel.Venue
 			};
 
@@ -50,7 +50,7 @@ namespace ConcertHub.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-		private string GetCurrentUserId()
+		private string GetUserId()
 			=> User.GetUserId();
 	}
 }

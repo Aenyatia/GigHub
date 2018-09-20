@@ -30,7 +30,7 @@ namespace ConcertHub
 			services.AddDbContext<IdentityContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-			services.AddIdentity<User, IdentityRole>(options =>
+			services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 					options.User.RequireUniqueEmail = true)
 				.AddEntityFrameworkStores<IdentityContext>()
 				.AddDefaultTokenProviders();
