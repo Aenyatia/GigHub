@@ -3,13 +3,14 @@ using ConcertHub.Infrastructure.Data;
 using ConcertHub.Infrastructure.Identity;
 using ConcertHub.Models;
 using ConcertHub.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
 namespace ConcertHub.Controllers
 {
-	//[Authorize]
+	[Authorize]
 	public class GigsController : Controller
 	{
 		private readonly ConcertContext _context;
