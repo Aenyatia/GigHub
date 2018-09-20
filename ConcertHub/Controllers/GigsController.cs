@@ -27,12 +27,19 @@ namespace ConcertHub.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public IActionResult Create(GigFormViewModel viewModel)
 		{
+			if (!ModelState.IsValid)
+			{
+				viewModel.Genres = _context.Genres.ToList();
+				return View(viewModel);
+			}
+
 			var gig = new Gig
 			{
 				ArtistId = User.GetUserId(),
-				DateTime = viewModel.DateTime,
+				DateTime = viewModel.GetDateTime(),
 				GenreId = viewModel.GenreId,
 				Venue = viewModel.Venue
 			};

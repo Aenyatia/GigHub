@@ -16,6 +16,14 @@
 			"provider": "cdnjs",
 			"library": "popper.js@1.14.4",
 			"destination": "wwwroot/lib/popper.js/"
+		},
+		{
+			"library": "jquery-validate@1.17.0",
+			"destination": "wwwroot/lib/jquery-validate/"
+		},
+		{
+			"library": "jquery-validation-unobtrusive@3.2.10",
+			"destination": "wwwroot/lib/jquery-validation-unobtrusive/"
 		}
 	]
 }

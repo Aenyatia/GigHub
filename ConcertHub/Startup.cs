@@ -23,6 +23,7 @@ namespace ConcertHub
 		{
 			services.AddMvc()
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			//.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
 			services.AddDbContext<ConcertContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("ConcertConnection")));

@@ -28,6 +28,7 @@ namespace ConcertHub.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(RegisterViewModel viewModel)
 		{
 			if (!ModelState.IsValid)
@@ -60,6 +61,7 @@ namespace ConcertHub.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(LoginViewModel viewModel)
 		{
 			if (!ModelState.IsValid)
@@ -68,7 +70,7 @@ namespace ConcertHub.Controllers
 			var user = await _userManager.FindByEmailAsync(viewModel.Email);
 			if (user == null)
 			{
-				ModelState.AddModelError(nameof(viewModel.Email), "Invalid username or password.");
+				ModelState.AddModelError(string.Empty, "Invalid username or password.");
 				return View(viewModel);
 			}
 
@@ -78,7 +80,7 @@ namespace ConcertHub.Controllers
 			if (result.Succeeded)
 				return RedirectToAction("Index", "Home");
 
-			ModelState.AddModelError(nameof(viewModel.Email), "Invalid username or password.");
+			ModelState.AddModelError(string.Empty, "Invalid username or password.");
 			return View(viewModel);
 		}
 
