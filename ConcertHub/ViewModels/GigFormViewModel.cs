@@ -1,4 +1,5 @@
 ﻿using ConcertHub.Models;
+using System;
 using System.Collections.Generic;
 
 namespace ConcertHub.ViewModels
@@ -10,5 +11,7 @@ namespace ConcertHub.ViewModels
 		public string Time { get; set; }
 		public int GenreId { get; set; }
 		public IEnumerable<Genre> Genres { get; set; }
+
+		public DateTime DateTime => DateTime.Parse($"{Date} {Time}");
 	}
 }
