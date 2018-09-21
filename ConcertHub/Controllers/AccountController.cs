@@ -54,7 +54,7 @@ namespace ConcertHub.Controllers
 			}
 
 			var registeredUser = await _userManager.FindByEmailAsync(viewModel.Email);
-			var artist = new Artist { Id = registeredUser.Id, Name = viewModel.UserName };
+			var artist = new Artist { Id = registeredUser.Id, Name = viewModel.Name };
 			_context.Artists.Add(artist);
 			_context.SaveChanges();
 

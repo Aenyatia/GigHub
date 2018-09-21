@@ -1,6 +1,4 @@
 ﻿using ConcertHub.Infrastructure.Data;
-using ConcertHub.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,12 +9,10 @@ namespace ConcertHub.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ConcertContext _concertContext;
-		private readonly UserManager<ApplicationUser> _userManager;
 
-		public HomeController(ConcertContext concertContext, UserManager<ApplicationUser> userManager)
+		public HomeController(ConcertContext concertContext)
 		{
 			_concertContext = concertContext;
-			_userManager = userManager;
 		}
 
 		[HttpGet]
