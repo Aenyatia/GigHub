@@ -1,4 +1,5 @@
-﻿using ConcertHub.Models;
+﻿using ConcertHub.Infrastructure.Data.EntityConfigurations;
+using ConcertHub.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConcertHub.Infrastructure.Data
@@ -8,6 +9,7 @@ namespace ConcertHub.Infrastructure.Data
 		public DbSet<Gig> Gigs { get; set; }
 		public DbSet<Genre> Genres { get; set; }
 		public DbSet<Artist> Artists { get; set; }
+		public DbSet<Attendance> Attendances { get; set; }
 
 		public ConcertContext(DbContextOptions<ConcertContext> options)
 			: base(options)
@@ -17,6 +19,8 @@ namespace ConcertHub.Infrastructure.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.ApplyConfiguration(new AttendanceConfiguration());
 
 			modelBuilder.Entity<Genre>().HasData(
 				new Genre { Id = 1, Name = "Jazz" },

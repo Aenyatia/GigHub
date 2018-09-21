@@ -20,6 +20,7 @@ namespace ConcertHub.Controllers
 		{
 			var upcomingGigs = _concertContext.Gigs
 				.Include(g => g.Artist)
+				.Include(g => g.Genre)
 				.Where(g => g.DateTime > DateTime.UtcNow)
 				.ToList();
 

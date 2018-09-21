@@ -2,10 +2,58 @@
 	background-color: white;
 }
 
+/* Bootstrap-level styles */
 .container {
 	margin-top: 50px;
 }
 
 .navbar {
 	background-color: lightskyblue;
+}
+
+/* Page-level styles */
+#gigs {
+	list-style: none;
+}
+
+#gigs > li {
+	position: relative;
+	margin-bottom: 40px;
+}
+
+#gigs > li .date {
+	background: lightskyblue;
+	color: white;
+	text-align: center;
+	width: 70px;
+	border-radius: 8px;
+}
+
+#gigs > li .date .month {
+	text-transform: uppercase;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 2px 6px;
+}
+
+#gigs > li .date .day {
+	background: #f7f7f7;
+	font-size: 20px;
+	padding: 6px 12px;
+	color: #333;
+}
+
+#gigs > li .details {
+	position: absolute;
+	top: 0;
+	left: 80px;
+}
+
+#gigs > li .details .artist {
+	font-weight: bold;
+	display: block;
+}
+
+#gigs > li .details .genre {
+	font-size: 15px;
 }
