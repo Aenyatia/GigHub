@@ -8,6 +8,7 @@
 				Hello @User.Identity.Name
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a asp-controller="Gigs" asp-action="Mine" class="dropdown-item">My Upcoming gigs</a>
 				<a asp-controller="Gigs" asp-action="Attending" class="dropdown-item">Gigs I'm Going</a>
 				<a asp-controller="Artists" asp-action="Following" class="dropdown-item">Artist I'm Following</a>
 				<div class="dropdown-divider"></div>

@@ -5,6 +5,7 @@ using ConcertHub.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace ConcertHub.Controllers
@@ -48,7 +49,18 @@ namespace ConcertHub.Controllers
 			_context.Gigs.Add(gig);
 			_context.SaveChanges();
 
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("Mine", "Gigs");
+		}
+
+		public IActionResult Mine()
+		{
+			var userId = User.GetUserId();
+			var gigs = _context.Gigs
+				.Where(g => g.ArtistId == userId && g.DateTime > DateTime.UtcNow)
+				.Include(g => g.Genre)
+				.ToList();
+
+			return View(gigs);
 		}
 
 		[HttpGet]
