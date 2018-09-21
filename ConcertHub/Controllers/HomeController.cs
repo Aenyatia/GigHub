@@ -1,4 +1,5 @@
 ﻿using ConcertHub.Infrastructure.Data;
+using ConcertHub.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,7 +25,14 @@ namespace ConcertHub.Controllers
 				.Where(g => g.DateTime > DateTime.UtcNow)
 				.ToList();
 
-			return View(upcomingGigs);
+			var viewModel = new GigsViewModel
+			{
+				UpcomingGigs = upcomingGigs,
+				ShowActions = User.Identity.IsAuthenticated,
+				Heading = "Upcoming gigs"
+			};
+
+			return View("Gigs", viewModel);
 		}
 	}
 }

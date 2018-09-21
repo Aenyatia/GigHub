@@ -1,7 +1,8 @@
-﻿@model IEnumerable<Gig>
+﻿@model GigsViewModel
 
-<ul id="gigs">
-	@foreach (var gig in Model)
+<h1>@Model.Heading</h1>
+<ul id="gigs" class="mt-5">
+	@foreach (var gig in Model.UpcomingGigs)
 	{
 		<li>
 			<div class="date">
@@ -14,12 +15,21 @@
 			</div>
 			<div class="details">
 				<span class="artist">
-					@gig.Artist.Name <button class="btn btn-sm btn-link js-toggle-follow" data-user-id="@gig.ArtistId">Follow</button>
+					@gig.Artist.Name
+
+					@if (Model.ShowActions)
+					{
+						<button class="btn btn-sm btn-link js-toggle-follow" data-user-id="@gig.ArtistId">Follow</button>
+					}
 				</span>
 				<span class="genre">
 					@gig.Genre.Name
 				</span>
-				<button class="btn btn-sm btn-primary float-right js-toggle-attendance" data-gig-id="@gig.Id">Going?</button>
+
+				@if (Model.ShowActions)
+				{
+					<button class="btn btn-sm btn-primary float-right js-toggle-attendance" data-gig-id="@gig.Id">Going?</button>
+				}
 			</div>
 		</li>
 	}

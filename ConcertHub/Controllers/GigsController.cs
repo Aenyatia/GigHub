@@ -4,6 +4,7 @@ using ConcertHub.Models;
 using ConcertHub.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace ConcertHub.Controllers
@@ -48,6 +49,27 @@ namespace ConcertHub.Controllers
 			_context.SaveChanges();
 
 			return RedirectToAction("Index", "Home");
+		}
+
+		[HttpGet]
+		public IActionResult Attending()
+		{
+			var userId = User.GetUserId();
+			var gigs = _context.Attendances
+				.Where(a => a.AttendeeId == userId)
+				.Select(a => a.Gig)
+				.Include(g => g.Artist)
+				.Include(g => g.Genre)
+				.ToList();
+
+			var viewModel = new GigsViewModel
+			{
+				UpcomingGigs = gigs,
+				ShowActions = User.Identity.IsAuthenticated,
+				Heading = "Gigs I'm attending"
+			};
+
+			return View("Gigs", viewModel);
 		}
 	}
 }
