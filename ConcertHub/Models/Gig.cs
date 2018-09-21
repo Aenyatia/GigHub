@@ -9,6 +9,7 @@ namespace ConcertHub.Models
 
 		[Required]
 		public string ArtistId { get; set; }
+		public Artist Artist { get; set; }
 
 		[Required]
 		public DateTime DateTime { get; set; }

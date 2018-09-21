@@ -4,7 +4,7 @@ namespace ConcertHub.ViewModels.Account
 {
 	public class RegisterViewModel
 	{
-		[Required(ErrorMessage = "The Username field is required. ")]
+		//[Required(ErrorMessage = "The Username field is required. ")]
 		public string UserName { get; set; }
 
 		[Required]

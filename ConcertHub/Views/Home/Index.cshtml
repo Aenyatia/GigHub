@@ -1,1 +1,8 @@
-﻿<h2>Home Page</h2>
+﻿@model IEnumerable<Gig>
+
+<ul>
+	@foreach (var gig in Model)
+	{
+		<li>@gig.DateTime - @gig.Artist.Name</li>
+	}
+</ul>

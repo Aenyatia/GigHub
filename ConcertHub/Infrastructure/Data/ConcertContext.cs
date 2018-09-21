@@ -7,6 +7,7 @@ namespace ConcertHub.Infrastructure.Data
 	{
 		public DbSet<Gig> Gigs { get; set; }
 		public DbSet<Genre> Genres { get; set; }
+		public DbSet<Artist> Artists { get; set; }
 
 		public ConcertContext(DbContextOptions<ConcertContext> options)
 			: base(options)

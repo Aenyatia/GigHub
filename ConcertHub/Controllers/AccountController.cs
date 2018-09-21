@@ -1,4 +1,6 @@
-﻿using ConcertHub.Infrastructure.Identity;
+﻿using ConcertHub.Infrastructure.Data;
+using ConcertHub.Infrastructure.Identity;
+using ConcertHub.Models;
 using ConcertHub.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +14,13 @@ namespace ConcertHub.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly ConcertContext _context;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ConcertContext context)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_context = context;
 		}
 
 		[HttpGet]
@@ -36,7 +40,7 @@ namespace ConcertHub.Controllers
 
 			var user = new ApplicationUser
 			{
-				UserName = viewModel.UserName,
+				UserName = viewModel.Email,
 				Email = viewModel.Email
 			};
 
@@ -48,6 +52,11 @@ namespace ConcertHub.Controllers
 
 				return View(viewModel);
 			}
+
+			var registeredUser = await _userManager.FindByEmailAsync(viewModel.Email);
+			var artist = new Artist { Id = registeredUser.Id, Name = viewModel.UserName };
+			_context.Artists.Add(artist);
+			_context.SaveChanges();
 
 			return RedirectToAction("Login");
 		}
