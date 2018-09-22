@@ -40,25 +40,7 @@
 	}
 </ul>
 
-@section scripts
-	{
-	@*<script>
-			$(document).ready(function () {
-				$(".js-toogle-attendance").click(function (e) {
-					var toogleBtn = $(e.target);
-					$.post("/api/attendances", { gigId: toogleBtn.attr("data-gig-id") })
-						.done(function () {
-							toogleBtn
-								.removeClass("btn-primary")
-								.addClass("btn-info")
-								.text("Going");
-						})
-						.fail(function () {
-							alert("Something failed!");
-						});
-				});
-			});
-		</script>*@
+@section scripts {
 	<script>
 		$(document).ready(function () {
 			$(".js-toggle-attendance").click(function (e) {
@@ -81,7 +63,6 @@
 					.fail(function () {
 						alert("Something failed!");
 					});
-
 			});
 
 			$(".js-toggle-follow").click(function (e) {
@@ -101,7 +82,6 @@
 					.fail(function () {
 						alert("Something failed!");
 					});
-
 			});
 		});
 	</script>

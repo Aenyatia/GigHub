@@ -11,6 +11,8 @@ namespace ConcertHub.Infrastructure.Data
 		public DbSet<Artist> Artists { get; set; }
 		public DbSet<Attendance> Attendances { get; set; }
 		public DbSet<Following> Followings { get; set; }
+		public DbSet<Notification> Notifications { get; set; }
+		public DbSet<UserNotification> UserNotifications { get; set; }
 
 		public ConcertContext(DbContextOptions<ConcertContext> options)
 			: base(options)
@@ -23,6 +25,7 @@ namespace ConcertHub.Infrastructure.Data
 
 			modelBuilder.ApplyConfiguration(new AttendanceConfiguration());
 			modelBuilder.ApplyConfiguration(new FollowingConfiguration());
+			modelBuilder.ApplyConfiguration(new UserNotificationConfiguration());
 
 			modelBuilder.Entity<Genre>().HasData(
 				new Genre { Id = 1, Name = "Jazz" },
