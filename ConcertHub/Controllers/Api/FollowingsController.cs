@@ -4,9 +4,11 @@ using ConcertHub.Infrastructure.Data;
 using ConcertHub.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConcertHub.Controllers.Api
 {
+	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class FollowingsController : ControllerBase

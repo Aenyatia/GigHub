@@ -32,7 +32,19 @@ namespace ConcertHub.Models
 		{
 			IsCanceled = true;
 
-			var notification = new Notification(NotificationType.GigCanceled, this);
+			var notification = Notification.GigCanceled(this);
+
+			foreach (var attendee in Attendances.Select(a => a.Attendee))
+				attendee.Notify(notification);
+		}
+
+		public void Modify(DateTime dateTime, string venue, int genreId)
+		{
+			var notification = Notification.GigUpdated(this, DateTime, Venue);
+
+			DateTime = dateTime;
+			Venue = venue;
+			GenreId = genreId;
 
 			foreach (var attendee in Attendances.Select(a => a.Attendee))
 				attendee.Notify(notification);

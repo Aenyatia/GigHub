@@ -1,5 +1,6 @@
 ﻿using ConcertHub.Infrastructure.Data;
 using ConcertHub.Infrastructure.Identity;
+using ConcertHub.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +36,8 @@ namespace ConcertHub
 					options.User.RequireUniqueEmail = true)
 				.AddEntityFrameworkStores<IdentityContext>()
 				.AddDefaultTokenProviders();
+
+			services.AddSingleton(AutoMapperMaps.Register());
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
