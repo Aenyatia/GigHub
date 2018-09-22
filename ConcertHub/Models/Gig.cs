@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace ConcertHub.Models
 {
@@ -22,6 +24,18 @@ namespace ConcertHub.Models
 		public int GenreId { get; set; }
 		public Genre Genre { get; set; }
 
-		public bool IsCanceled { get; set; }
+		public bool IsCanceled { get; private set; }
+
+		public ICollection<Attendance> Attendances { get; private set; } = new List<Attendance>();
+
+		public void Cancel()
+		{
+			IsCanceled = true;
+
+			var notification = new Notification(NotificationType.GigCanceled, this);
+
+			foreach (var attendee in Attendances.Select(a => a.Attendee))
+				attendee.Notify(notification);
+		}
 	}
 }

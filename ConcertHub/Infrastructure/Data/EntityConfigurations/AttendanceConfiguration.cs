@@ -11,7 +11,7 @@ namespace ConcertHub.Infrastructure.Data.EntityConfigurations
 			builder.HasKey(a => new { a.GigId, a.AttendeeId });
 
 			builder.HasOne(a => a.Gig)
-				.WithMany()
+				.WithMany(g => g.Attendances)
 				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}

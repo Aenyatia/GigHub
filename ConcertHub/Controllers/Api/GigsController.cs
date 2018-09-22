@@ -2,6 +2,7 @@
 using ConcertHub.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace ConcertHub.Controllers.Api
@@ -22,12 +23,15 @@ namespace ConcertHub.Controllers.Api
 		public IActionResult Cancel(int id)
 		{
 			var userId = User.GetUserId();
-			var gig = _context.Gigs.Single(g => g.Id == id && g.ArtistId == userId);
+			var gig = _context.Gigs
+				.Include(g => g.Attendances.Select(a => a.Attendee))
+				.Single(g => g.Id == id && g.ArtistId == userId);
 
 			if (gig.IsCanceled)
 				return NotFound();
 
-			gig.IsCanceled = true;
+			gig.Cancel();
+
 			_context.SaveChanges();
 
 			return Ok();
