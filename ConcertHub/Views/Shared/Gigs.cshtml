@@ -17,6 +17,11 @@
 				<span class="artist">
 					@gig.Artist.Name
 
+					@if (gig.IsCanceled)
+					{
+						<span class="badge badge-warning">Canceled</span>
+					}
+
 					@if (Model.ShowActions)
 					{
 						<button class="btn btn-sm btn-link js-toggle-follow" data-user-id="@gig.ArtistId">Follow</button>
@@ -26,7 +31,7 @@
 					@gig.Genre.Name
 				</span>
 
-				@if (Model.ShowActions)
+				@if (Model.ShowActions && !gig.IsCanceled)
 				{
 					<button class="btn btn-sm btn-primary float-right js-toggle-attendance" data-gig-id="@gig.Id">Going?</button>
 				}
@@ -60,7 +65,7 @@
 				var button = $(e.target);
 				$.ajax(
 					{
-						url: "api/attendances",
+						url: "/api/attendances",
 						method: "POST",
 						contentType: "application/json",
 						data: JSON.stringify({
@@ -83,7 +88,7 @@
 				var button = $(e.target);
 				$.ajax(
 					{
-						url: "api/followings",
+						url: "/api/followings",
 						method: "POST",
 						contentType: "application/json",
 						data: JSON.stringify({

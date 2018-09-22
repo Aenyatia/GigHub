@@ -103,7 +103,9 @@ namespace ConcertHub.Controllers
 		{
 			var userId = User.GetUserId();
 			var gigs = _context.Gigs
-				.Where(g => g.ArtistId == userId && g.DateTime > DateTime.UtcNow)
+				.Where(g => g.ArtistId == userId &&
+							g.DateTime > DateTime.UtcNow &&
+							!g.IsCanceled)
 				.Include(g => g.Genre)
 				.ToList();
 
