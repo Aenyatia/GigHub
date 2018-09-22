@@ -30,7 +30,7 @@ namespace ConcertHub.Controllers.Api
 		{
 			var userId = User.GetUserId();
 			var notifications = _context.UserNotifications
-				.Where(un => un.ArtistId == userId)
+				.Where(un => un.ArtistId == userId && !un.IsRead)
 				.Select(un => un.Notification)
 				.Include(n => n.Gig.Artist)
 				.ToList();
