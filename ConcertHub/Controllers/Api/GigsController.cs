@@ -24,7 +24,8 @@ namespace ConcertHub.Controllers.Api
 		{
 			var userId = User.GetUserId();
 			var gig = _context.Gigs
-				.Include(g => g.Attendances.Select(a => a.Attendee))
+				.Include(g => g.Attendances)
+				.ThenInclude(a => a.Attendee)
 				.Single(g => g.Id == id && g.ArtistId == userId);
 
 			if (gig.IsCanceled)
