@@ -37,5 +37,20 @@ namespace ConcertHub.Controllers.Api
 
 			return Ok(_mapper.Map<IEnumerable<Notification>, IEnumerable<NotificationDto>>(notifications));
 		}
+
+		[HttpPost]
+		public IActionResult MarkAsRed()
+		{
+			var userId = User.GetUserId();
+			var notifications = _context.UserNotifications
+				.Where(un => un.ArtistId == userId && !un.IsRead)
+				.ToList();
+
+			notifications.ForEach(n => n.Read());
+
+			_context.SaveChanges();
+
+			return Ok();
+		}
 	}
 }

@@ -132,5 +132,13 @@ namespace ConcertHub.Controllers
 
 			return View("Gigs", viewModel);
 		}
+
+		[HttpPost]
+		public IActionResult Search(GigsViewModel viewModel)
+		{
+			return RedirectToAction("Index", "Home", new { query = viewModel.SearchTerm });
+
+			
+		}
 	}
 }

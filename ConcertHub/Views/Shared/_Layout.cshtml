@@ -21,19 +21,21 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
 	<script asp-src-include="lib/underscore.js/underscore.js"></script>
 	@*<script asp-src-include="lib/jquery-validate/jquery.validate.min.js"></script>
 		<script asp-src-include="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
 
 	@RenderSection("scripts", false)
 	<script type="text/x-template" id="notifications-template">
-		<ul>
+		<ul class="notificationss">
 			<%
 			_.each(notifications, function(notification){
 			if(notification.type == 1)
 			{%>
-			<li><%= notification.gig.artist.name %> has canceled the gig at <%= notification.gig.venue %> at <%= notification.gig.dateTime %></li>
+			<li><span class="highlight"><%= notification.gig.artist.name %></span> has canceled the gig at <%= notification.gig.venue %> at <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %></li>
 			<%}
+
 			if(notification.type == 2)
 			{
 			var changes = [];
@@ -50,17 +52,17 @@
 			if(notification.originalDateTime != notification.gig.dateTime)
 			{
 			changes.push('date/time');
-			originalValues.push(notification.originalDateTime);
-			newValues.push(notification.gig.dateTime);
+			originalValues.push(moment(notification.originalDateTime).format("D MMM HH:mm"));
+			newValues.push(moment(notification.gig.dateTime).format("D MMM HH:mm"));
 			}
 
 			%>
-			<li><%= notification.gig.artist.name %> has changed the <%= changes.join(' and ') %> of the gig from <%= originalValues.join('/') %> to <%= newValues.join('/') %></li>
+			<li><span class="highlight"><%= notification.gig.artist.name %></span> has changed the <%= changes.join(' and ') %> of the gig from <%= originalValues.join('') %> to <%= newValues.join('') %></li>
 			<%}
 
 			if(notification.type == 3)
 			{%>
-			<li><%= notification.gig.artist.name %> has created the gig at <%= notification.gig.venue %> at <%= notification.gig.dateTime %></li>
+			<li><%= notification.gig.artist.name %> has created the gig.</li>
 			<%}
 			})
 			%>
@@ -76,7 +78,7 @@
 					dataType: "json"
 				})
 				.done(function (notifications) {
-					if (notifications.length == 0) {
+					if (notifications.length === 0) {
 						return;
 					}
 
@@ -92,7 +94,24 @@
 							var compiled = _.template($("#notifications-template").html());
 							return compiled({ notifications: notifications });
 						},
-						placement: "bottom"
+						placement: "bottom",
+						trigger: "click",
+						template: '<div class="popover popover-notifications" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+
+					}).on("shown.bs.popover", function () {
+						$.ajax(
+							{
+								url: "/api/notifications",
+								method: "POST"
+							})
+							.done(function () {
+								$(".js-notifications-count")
+									.css("display", "none")
+									.text("");
+							})
+							.fail(function () {
+								alert("Cant connect.");
+							});
 					});
 				})
 				.fail(function () {

@@ -1,6 +1,20 @@
 ﻿@model GigsViewModel
 
 <h1>@Model.Heading</h1>
+
+<form asp-controller="Gigs" asp-action="Search" method="post">
+	<div class="form-group col-md-4">
+		<div class="input-group">
+			<input asp-for="SearchTerm" type="text" class="form-control" placeholder="Search" />
+			<div class="input-group-append">
+				<span class="input-group-text">
+					<i class="fas fa-search"></i>
+				</span>
+			</div>
+		</div>
+	</div>
+</form>
+
 <ul id="gigs" class="mt-5">
 	@foreach (var gig in Model.UpcomingGigs)
 	{

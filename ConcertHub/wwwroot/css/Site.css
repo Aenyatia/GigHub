@@ -73,3 +73,27 @@
 #gigs > li:hover .actions {
 	display: block;
 }
+
+
+.popover-notifications .popover-body {
+	padding: 10px;
+}
+
+.popover-notifications ul.notificationss {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.popover-notifications ul.notificationss > li {
+	border-bottom: 1px solid #ddd;
+	padding: 10px 0;
+}
+
+.popover-notifications ul.notificationss > li:last-child {
+	border-bottom: none;
+}
+
+.popover-notifications ul.notificationss .highlight {
+	font-weight: bold;
+}

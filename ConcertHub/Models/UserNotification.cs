@@ -10,7 +10,7 @@ namespace ConcertHub.Models
 		public int NotificationId { get; private set; }
 		public Notification Notification { get; private set; }
 
-		public bool IsRead { get; set; }
+		public bool IsRead { get; private set; }
 
 		protected UserNotification()
 		{
@@ -20,6 +20,11 @@ namespace ConcertHub.Models
 		{
 			Artist = artist ?? throw new ArgumentNullException(nameof(artist));
 			Notification = notification ?? throw new ArgumentNullException(nameof(notification));
+		}
+
+		public void Read()
+		{
+			IsRead = true;
 		}
 	}
 }
