@@ -58,11 +58,12 @@
 
 #gigs > li .details .artist {
 	font-weight: bold;
-	display: block;
 }
 
 #gigs > li .details .genre {
-	font-size: 15px;
+	font-size: 14px;
+	display: block;
+	margin-bottom: 4px;
 }
 
 #gigs > li .actions {
@@ -73,7 +74,6 @@
 #gigs > li:hover .actions {
 	display: block;
 }
-
 
 .popover-notifications .popover-body {
 	padding: 10px;

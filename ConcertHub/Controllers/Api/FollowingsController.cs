@@ -2,9 +2,9 @@
 using ConcertHub.Extensions;
 using ConcertHub.Infrastructure.Data;
 using ConcertHub.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ConcertHub.Controllers.Api
 {
@@ -35,6 +35,21 @@ namespace ConcertHub.Controllers.Api
 			};
 
 			_context.Followings.Add(follow);
+			_context.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpPost("{artistId}")]
+		public IActionResult CancelFollowing(string artistId)
+		{
+			var userId = User.GetUserId();
+			var follow = _context.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == artistId);
+
+			if (follow == null)
+				return NotFound();
+
+			_context.Followings.Remove(follow);
 			_context.SaveChanges();
 
 			return Ok();
