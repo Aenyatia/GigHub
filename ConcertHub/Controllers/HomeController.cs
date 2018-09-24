@@ -5,16 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using ConcertHub.Repositories;
 
 namespace ConcertHub.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ConcertContext _context;
+		private readonly AttendanceRepository _attendanceRepository;
 
 		public HomeController(ConcertContext context)
 		{
 			_context = context;
+			_attendanceRepository = new AttendanceRepository(_context);
 		}
 
 		[HttpGet]
@@ -33,9 +36,7 @@ namespace ConcertHub.Controllers
 			}
 
 			var userId = User.GetUserId();
-			var attendances = _context.Attendances
-				.Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.UtcNow)
-				.ToList()
+			var attendances = _attendanceRepository.GetFutureAttendances(userId)
 				.ToLookup(a => a.GigId);
 
 			var viewModel = new GigsViewModel
