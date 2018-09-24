@@ -59,5 +59,10 @@ namespace ConcertHub.Repositories
 				.Include(g => g.Genre)
 				.ToList();
 		}
+
+		public void Add(Gig gig)
+		{
+			_context.Add(gig);
+		}
 	}
 }
