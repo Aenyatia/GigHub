@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ConcertHub.Repositories
 {
-	public class GenreRepository
+	public class GenreRepository : IGenreRepository
 	{
 		private readonly ConcertContext _context;
 

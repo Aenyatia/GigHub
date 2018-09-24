@@ -1,5 +1,4 @@
 ﻿using ConcertHub.Extensions;
-using ConcertHub.Infrastructure.Data;
 using ConcertHub.Models;
 using ConcertHub.Persistence;
 using ConcertHub.ViewModels;
@@ -12,13 +11,11 @@ namespace ConcertHub.Controllers
 	[Authorize]
 	public class GigsController : Controller
 	{
-		private readonly ConcertContext _context;
-		private readonly UnitOfWork _unitOfWork;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public GigsController(ConcertContext context)
+		public GigsController(IUnitOfWork unitOfWork)
 		{
-			_context = context;
-			_unitOfWork = new UnitOfWork(_context);
+			_unitOfWork = unitOfWork;
 		}
 
 		[HttpGet]

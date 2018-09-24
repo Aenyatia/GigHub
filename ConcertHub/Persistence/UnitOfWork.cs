@@ -3,23 +3,27 @@ using ConcertHub.Repositories;
 
 namespace ConcertHub.Persistence
 {
-	public class UnitOfWork
+	public class UnitOfWork : IUnitOfWork
 	{
 		private readonly ConcertContext _context;
 
-		public GigRepository Gigs { get; private set; }
-		public AttendanceRepository Attendances { get; private set; }
-		public GenreRepository Genres { get; private set; }
-		public FollowingRepository Followings { get; private set; }
+		public IGigRepository Gigs { get; private set; }
+		public IAttendanceRepository Attendances { get; private set; }
+		public IGenreRepository Genres { get; private set; }
+		public IFollowingRepository Followings { get; private set; }
 
-		public UnitOfWork(ConcertContext context)
+		public UnitOfWork(ConcertContext context,
+			IGigRepository gigRepository,
+			IAttendanceRepository attendanceRepository,
+			IGenreRepository genreRepository,
+			IFollowingRepository followingRepository)
 		{
 			_context = context;
 
-			Gigs = new GigRepository(_context);
-			Attendances = new AttendanceRepository(_context);
-			Genres = new GenreRepository(_context);
-			Followings = new FollowingRepository(_context);
+			Gigs = gigRepository;
+			Attendances = attendanceRepository;
+			Genres = genreRepository;
+			Followings = followingRepository;
 		}
 
 		public void Complete()

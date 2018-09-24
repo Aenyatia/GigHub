@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ConcertHub.Repositories
 {
-	public class AttendanceRepository
+	public class AttendanceRepository : IAttendanceRepository
 	{
 		private readonly ConcertContext _context;
 

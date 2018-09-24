@@ -1,6 +1,8 @@
 ﻿using ConcertHub.Infrastructure.Data;
 using ConcertHub.Infrastructure.Identity;
 using ConcertHub.Mappers;
+using ConcertHub.Persistence;
+using ConcertHub.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -38,6 +40,12 @@ namespace ConcertHub
 				.AddDefaultTokenProviders();
 
 			services.AddSingleton(AutoMapperMaps.Register());
+
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+			services.AddScoped<IGigRepository, GigRepository>();
+			services.AddScoped<IGenreRepository, GenreRepository>();
+			services.AddScoped<IFollowingRepository, FollowingRepository>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
