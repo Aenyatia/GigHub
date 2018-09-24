@@ -23,6 +23,7 @@ namespace ConcertHub.Infrastructure.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
+			//modelBuilder.ApplyConfiguration(new GigConfiguration());
 			modelBuilder.ApplyConfiguration(new AttendanceConfiguration());
 			modelBuilder.ApplyConfiguration(new FollowingConfiguration());
 			modelBuilder.ApplyConfiguration(new UserNotificationConfiguration());
