@@ -5,7 +5,7 @@
 <form asp-controller="Gigs" asp-action="Search" method="post">
 	<div class="form-group col-md-4">
 		<div class="input-group">
-			<input asp-for="SearchTerm" type="text" class="form-control" placeholder="Search" />
+			<input asp-for="SearchTerm" type="text" class="form-control" placeholder="Search by artist, genre, venue" />
 			<div class="input-group-append">
 				<span class="input-group-text">
 					<i class="fas fa-search"></i>
@@ -29,7 +29,7 @@
 			</div>
 			<div class="details">
 				<span class="artist">
-					@gig.Artist.Name
+					<a asp-controller="Gigs" asp-action="Details" asp-route-gigId="@gig.Id" class="btn-link">@gig.Artist.Name</a>
 
 					@if (gig.IsCanceled)
 					{
@@ -47,7 +47,12 @@
 
 				@if (Model.ShowActions && !gig.IsCanceled)
 				{
-					<button class="btn btn-sm btn-primary float-right js-toggle-attendance" data-gig-id="@gig.Id">Going?</button>
+					<button data-gig-id="@gig.Id"
+							class="btn
+							@(Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-light")
+							btn-sm float-right js-toggle-attendance" data-gig-id="@gig.Id">
+						Going?
+					</button>
 				}
 			</div>
 		</li>
@@ -59,28 +64,45 @@
 		$(document).ready(function () {
 			$(".js-toggle-attendance").click(function (e) {
 				var button = $(e.target);
-				$.ajax(
-					{
-						url: "/api/attendances",
-						method: "POST",
-						contentType: "application/json",
-						data: JSON.stringify({
-							gigId: button.attr("data-gig-id")
+
+				if (button.hasClass("btn-light")) {
+					$.ajax(
+						{
+							url: "/api/attendances",
+							method: "POST",
+							contentType: "application/json",
+							data: JSON.stringify({
+								gigId: button.attr("data-gig-id")
+							})
 						})
+						.done(function () {
+							button
+								.removeClass("btn-light")
+								.addClass("btn-info")
+								.text("Going");
+						})
+						.fail(function () {
+							alert("Something failed!");
+						});
+				} else {
+					$.ajax({
+						url: "/api/attendances/" + button.attr("data-gig-id"),
+						method: "DELETE"
 					})
-					.done(function () {
-						button
-							.removeClass("btn-primary")
-							.addClass("btn-info")
-							.text("Going");
-					})
-					.fail(function () {
-						alert("Something failed!");
-					});
+						.done(function () {
+							button.removeClass("btn-info")
+								.addClass("btn-light")
+								.text("Going?");
+						})
+						.fail(function () {
+							alert("Something failed.");
+						});
+				}
 			});
 
 			$(".js-toggle-follow").click(function (e) {
 				var button = $(e.target);
+
 				$.ajax(
 					{
 						url: "/api/followings",

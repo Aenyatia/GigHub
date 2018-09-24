@@ -39,5 +39,20 @@ namespace ConcertHub.Controllers.Api
 
 			return Ok();
 		}
+
+		[HttpDelete("{gigId}")]
+		public IActionResult DeleteAttendance(int gigId)
+		{
+			var userId = User.GetUserId();
+			var attendance = _context.Attendances.SingleOrDefault(a => a.GigId == gigId && a.AttendeeId == userId);
+
+			if (attendance == null)
+				return NotFound();
+
+			_context.Attendances.Remove(attendance);
+			_context.SaveChanges();
+
+			return Ok(gigId);
+		}
 	}
 }
