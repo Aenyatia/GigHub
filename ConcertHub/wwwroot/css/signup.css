@@ -1,0 +1,9 @@
+﻿html,
+body {
+	background: url(/img/signup-wallpaper.jpg);
+	font-size: 20px;
+}
+
+#signup-content {
+	padding: 25%;
+}
