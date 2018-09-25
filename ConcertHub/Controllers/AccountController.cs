@@ -1,22 +1,21 @@
-﻿using ConcertHub.Infrastructure.Data;
-using ConcertHub.Infrastructure.Identity;
-using ConcertHub.Models;
-using ConcertHub.ViewModels.Account;
+﻿using GigHub.Infrastructure.Persistence.Data;
+using GigHub.Infrastructure.Persistence.Identity;
+using GigHub.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace ConcertHub.Controllers
+namespace GigHub.Controllers
 {
 	[Authorize]
 	public class AccountController : Controller
 	{
-		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly ConcertContext _context;
+		private readonly UserManager<AppUser> _userManager;
+		private readonly SignInManager<AppUser> _signInManager;
+		private readonly ApplicationContext _context;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ConcertContext context)
+		public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationContext context)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -38,7 +37,7 @@ namespace ConcertHub.Controllers
 			if (!ModelState.IsValid)
 				return View(viewModel);
 
-			var user = new ApplicationUser
+			var user = new AppUser
 			{
 				UserName = viewModel.Email,
 				Email = viewModel.Email
@@ -52,11 +51,6 @@ namespace ConcertHub.Controllers
 
 				return View(viewModel);
 			}
-
-			var registeredUser = await _userManager.FindByEmailAsync(viewModel.Email);
-			var artist = new Artist { Id = registeredUser.Id, Name = viewModel.Name };
-			_context.Artists.Add(artist);
-			_context.SaveChanges();
 
 			return RedirectToAction("Login");
 		}
@@ -93,7 +87,7 @@ namespace ConcertHub.Controllers
 			return View(viewModel);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();

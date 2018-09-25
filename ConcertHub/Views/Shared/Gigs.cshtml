@@ -1,4 +1,4 @@
-﻿@model GigsViewModel
+﻿@model GigHub.Web.ViewModels.GigsViewModel
 
 <h1>@Model.Heading</h1>
 
@@ -35,11 +35,6 @@
 					{
 						<span class="badge badge-warning">Canceled</span>
 					}
-
-					@*@if (Model.ShowActions)
-						{
-							<button class="btn btn-sm btn-link js-toggle-follow" data-user-id="@gig.ArtistId">Follow</button>
-						}*@
 				</span>
 				<span class="genre">
 					@gig.Genre.Name
@@ -49,7 +44,7 @@
 				{
 					<button data-gig-id="@gig.Id"
 							class="btn
-							@(Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-light")
+							@(Model.UserAttendance.Contains(gig.Id) ? "btn-info" : "btn-light")
 							btn-sm js-toggle-attendance" data-gig-id="@gig.Id">
 						Going?
 					</button>

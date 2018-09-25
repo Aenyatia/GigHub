@@ -1,21 +1,21 @@
-﻿using ConcertHub.Dtos;
-using ConcertHub.Extensions;
-using ConcertHub.Infrastructure.Data;
-using ConcertHub.Models;
+﻿using GigHub.Core.Domain;
+using GigHub.Infrastructure.Extensions;
+using GigHub.Infrastructure.Persistence.Data;
+using GigHub.Web.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace ConcertHub.Controllers.Api
+namespace GigHub.Controllers.Api
 {
 	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AttendancesController : ControllerBase
 	{
-		private readonly ConcertContext _context;
+		private readonly ApplicationContext _context;
 
-		public AttendancesController(ConcertContext context)
+		public AttendancesController(ApplicationContext context)
 		{
 			_context = context;
 		}

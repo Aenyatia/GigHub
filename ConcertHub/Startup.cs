@@ -1,8 +1,6 @@
-﻿using ConcertHub.Infrastructure.Data;
-using ConcertHub.Infrastructure.Identity;
-using ConcertHub.Mappers;
-using ConcertHub.Persistence;
-using ConcertHub.Repositories;
+﻿using GigHub.Infrastructure.Persistence.Data;
+using GigHub.Infrastructure.Persistence.Identity;
+using GigHub.Web.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ConcertHub
+namespace GigHub
 {
 	public class Startup
 	{
@@ -28,24 +26,18 @@ namespace ConcertHub
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			//.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-			services.AddDbContext<ConcertContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("ConcertConnection")));
+			services.AddDbContext<ApplicationContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("AppConnection")));
 
 			services.AddDbContext<IdentityContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-			services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+			services.AddIdentity<AppUser, IdentityRole>(options =>
 					options.User.RequireUniqueEmail = true)
 				.AddEntityFrameworkStores<IdentityContext>()
 				.AddDefaultTokenProviders();
 
 			services.AddSingleton(AutoMapperMaps.Register());
-
-			services.AddScoped<IUnitOfWork, UnitOfWork>();
-			services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-			services.AddScoped<IGigRepository, GigRepository>();
-			services.AddScoped<IGenreRepository, GenreRepository>();
-			services.AddScoped<IFollowingRepository, FollowingRepository>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -1,19 +1,19 @@
-﻿using ConcertHub.Infrastructure.Identity;
-using ConcertHub.ViewModels.Account;
+﻿using GigHub.Infrastructure.Persistence.Identity;
+using GigHub.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace ConcertHub.Controllers.Api
+namespace GigHub.Controllers.Api
 {
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AccountController : ControllerBase
 	{
-		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly UserManager<AppUser> _userManager;
+		private readonly SignInManager<AppUser> _signInManager;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;

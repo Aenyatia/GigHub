@@ -1,26 +1,27 @@
-﻿using ConcertHub.Extensions;
-using ConcertHub.Infrastructure.Data;
-using ConcertHub.ViewModels;
+﻿using GigHub.Core.Extensions;
+using GigHub.Infrastructure.Extensions;
+using GigHub.Infrastructure.Persistence.Data;
+using GigHub.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using ConcertHub.Repositories;
 
-namespace ConcertHub.Controllers
+namespace GigHub.Controllers
 {
+	[Authorize]
 	public class HomeController : Controller
 	{
-		private readonly ConcertContext _context;
-		private readonly AttendanceRepository _attendanceRepository;
+		private readonly ApplicationContext _context;
 
-		public HomeController(ConcertContext context)
+		public HomeController(ApplicationContext context)
 		{
 			_context = context;
-			_attendanceRepository = new AttendanceRepository(_context);
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public IActionResult Index(string query = null)
 		{
 			var upcomingGigs = _context.Gigs
@@ -28,7 +29,7 @@ namespace ConcertHub.Controllers
 				.Include(g => g.Genre)
 				.Where(g => g.DateTime > DateTime.UtcNow && !g.IsCanceled);
 
-			if (!string.IsNullOrWhiteSpace(query))
+			if (!query.IsEmpty())
 			{
 				upcomingGigs = upcomingGigs.Where(g => g.Artist.Name.Contains(query) ||
 													   g.Genre.Name.Contains(query) ||
@@ -36,16 +37,18 @@ namespace ConcertHub.Controllers
 			}
 
 			var userId = User.GetUserId();
-			var attendances = _attendanceRepository.GetFutureAttendances(userId)
-				.ToLookup(a => a.GigId);
+			var userAttendance = _context.Attendances
+					.Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.UtcNow)
+					.ToLookup(a => a.GigId);
 
 			var viewModel = new GigsViewModel
 			{
-				UpcomingGigs = upcomingGigs,
-				ShowActions = User.Identity.IsAuthenticated,
-				Heading = "Upcoming gigs",
+				UpcomingGigs = upcomingGigs.ToList(),
+				UserAttendance = userAttendance,
 				SearchTerm = query,
-				Attendances = attendances
+
+				ShowActions = User.Identity.IsAuthenticated,
+				Heading = "Upcoming gigs "
 			};
 
 			return View("Gigs", viewModel);

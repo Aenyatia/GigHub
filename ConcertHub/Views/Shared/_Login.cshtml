@@ -5,7 +5,7 @@
 	<ul class="navbar-nav">
 		<li id="notifications" class="nav-item">
 			<a href="#" class="nav-link">
-				<i class="far fa-bell"></i>
+				<i class="fa fa-bell"></i>
 				<span class="badge badge-info js-notifications-count"></span>
 			</a>
 		</li>
@@ -16,19 +16,11 @@
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a asp-controller="Gigs" asp-action="Mine" class="dropdown-item">My Upcoming gigs</a>
 				<a asp-controller="Gigs" asp-action="Attending" class="dropdown-item">Gigs I'm Going</a>
-				<a asp-controller="Artists" asp-action="Following" class="dropdown-item">Artist I'm Following</a>
+				<a asp-controller="Users" asp-action="Following" class="dropdown-item">Artist I'm Following</a>
 				<div class="dropdown-divider"></div>
 				<a asp-controller="Account" asp-action="Logout" class="dropdown-item">Sign out</a>
 			</div>
 		</li>
-
-
-		@*<li class="nav-item">
-				<a class="nav-link" href="#">Hello @User.Identity.Name!</a>
-			</li>
-			<li class="nav-item">
-				<a asp-controller="Account" asp-action="Logout" class="nav-link">Sing out</a>
-			</li>*@
 	</ul>
 }
 else

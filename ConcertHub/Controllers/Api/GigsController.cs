@@ -1,20 +1,20 @@
-﻿using ConcertHub.Extensions;
-using ConcertHub.Infrastructure.Data;
+﻿using GigHub.Infrastructure.Extensions;
+using GigHub.Infrastructure.Persistence.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace ConcertHub.Controllers.Api
+namespace GigHub.Controllers.Api
 {
 	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class GigsController : ControllerBase
 	{
-		private readonly ConcertContext _context;
+		private readonly ApplicationContext _context;
 
-		public GigsController(ConcertContext context)
+		public GigsController(ApplicationContext context)
 		{
 			_context = context;
 		}
