@@ -1,11 +1,11 @@
 ﻿using GigHub.Core.Domain;
 using GigHub.Infrastructure.Persistence.Data;
 using GigHub.Infrastructure.Persistence.Identity;
+using GigHub.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using GigHub.Commands;
 
 namespace GigHub.Controllers
 {
@@ -33,29 +33,29 @@ namespace GigHub.Controllers
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterCommand command)
+		public async Task<IActionResult> Register(RegisterViewModel viewModel)
 		{
 			if (!ModelState.IsValid)
-				return View(command);
+				return View(viewModel);
 
 			var user = new ApplicationUser
 			{
-				UserName = command.Email,
-				Email = command.Email
+				UserName = viewModel.Email,
+				Email = viewModel.Email
 			};
 
-			var identityResult = await _userManager.CreateAsync(user, command.Password);
+			var identityResult = await _userManager.CreateAsync(user, viewModel.Password);
 			if (!identityResult.Succeeded)
 			{
 				foreach (var error in identityResult.Errors)
 					ModelState.AddModelError(error.Code, error.Description);
 
-				return View(command);
+				return View(viewModel);
 			}
 
 			// create local user - need to refactoring
-			var identityUser = await _userManager.FindByEmailAsync(command.Email);
-			var localUser = new User(identityUser.Id, command.Name);
+			var identityUser = await _userManager.FindByEmailAsync(viewModel.Email);
+			var localUser = new User(identityUser.Id, viewModel.Name);
 			_dbContext.Users.Add(localUser);
 			_dbContext.SaveChanges();
 
@@ -69,7 +69,7 @@ namespace GigHub.Controllers
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(LogInCommand viewModel)
+		public async Task<IActionResult> Login(LogInViewModel viewModel)
 		{
 			if (!ModelState.IsValid)
 				return View(viewModel);

@@ -8,7 +8,7 @@
 	var done = function () {
 		const text = (followButton.text() === "Follow") ? "Following" : "Follow";
 
-		followButton.text(text);
+		followButton.toggleClass("btn-info").toggleClass("btn-light").text(text);
 	};
 
 	var toggleFollow = function (e) {

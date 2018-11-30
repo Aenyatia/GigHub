@@ -1,11 +1,12 @@
 ﻿using GigHub.Infrastructure.Persistence.Identity;
+using GigHub.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using GigHub.Commands;
 
 namespace GigHub.Controllers.Api
 {
+	// for testing
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AccountController : ControllerBase
@@ -13,14 +14,16 @@ namespace GigHub.Controllers.Api
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public AccountController(
+			UserManager<ApplicationUser> userManager,
+			SignInManager<ApplicationUser> signInManager)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody]LogInCommand viewModel)
+		public async Task<IActionResult> Post([FromBody]LogInViewModel viewModel)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest();

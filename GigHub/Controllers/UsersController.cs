@@ -11,9 +11,7 @@ namespace GigHub.Controllers
 		private readonly ApplicationDbContext _dbContext;
 
 		public UsersController(ApplicationDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+			=> _dbContext = dbContext;
 
 		public IActionResult Following()
 		{

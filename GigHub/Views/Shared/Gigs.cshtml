@@ -1,5 +1,9 @@
 ﻿@model GigHub.Web.ViewModels.GigsViewModel
 
+@{
+	ViewData["Title"] = @Model.Heading;
+}
+
 <h1 class="pl-3">@Model.Heading</h1>
 
 <form asp-controller="Gigs" asp-action="Search" method="post">

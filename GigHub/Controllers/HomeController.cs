@@ -16,9 +16,7 @@ namespace GigHub.Controllers
 		private readonly ApplicationDbContext _dbContext;
 
 		public HomeController(ApplicationDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+			=> _dbContext = dbContext;
 
 		[HttpGet]
 		[AllowAnonymous]

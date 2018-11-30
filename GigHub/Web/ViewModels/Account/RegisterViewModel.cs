@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GigHub.Commands
+namespace GigHub.Web.ViewModels.Account
 {
-	public class RegisterCommand
+	public class RegisterViewModel
 	{
 		[Required]
 		public string Name { get; set; }

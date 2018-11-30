@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace GigHub.Web
+namespace GigHub.Web.Validators
 {
 	public class FutureDate : ValidationAttribute
 	{

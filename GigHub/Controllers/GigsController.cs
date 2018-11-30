@@ -16,9 +16,7 @@ namespace GigHub.Controllers
 		private readonly ApplicationDbContext _dbContext;
 
 		public GigsController(ApplicationDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+			=> _dbContext = dbContext;
 
 		[HttpGet]
 		public IActionResult Create()
@@ -70,6 +68,7 @@ namespace GigHub.Controllers
 
 			var viewModel = new GigFormViewModel
 			{
+				Id = gigId,
 				Genres = _dbContext.Genres.ToList(),
 				Venue = gig.Venue,
 				Date = gig.DateTime.ToString("yyyy-MM-dd"),
@@ -167,16 +166,15 @@ namespace GigHub.Controllers
 
 			var viewModel = new GigDetailsViewModel { Gig = gig };
 
-			if (User.Identity.IsAuthenticated)
-			{
-				var userId = User.GetUserId();
+			if (!User.Identity.IsAuthenticated)
+				return View("Details", viewModel);
 
-				viewModel.IsAttending = _dbContext.Attendances
-					.SingleOrDefault(a => a.AttendeeId == userId && a.GigId == gigId) != null;
+			var userId = User.GetUserId();
+			viewModel.IsAttending = _dbContext.Attendances
+										.SingleOrDefault(a => a.AttendeeId == userId && a.GigId == gigId) != null;
 
-				viewModel.IsFollowing = _dbContext.Followings
-					.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == gig.ArtistId) != null;
-			}
+			viewModel.IsFollowing = _dbContext.Followings
+										.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == gig.ArtistId) != null;
 
 			return View("Details", viewModel);
 		}
