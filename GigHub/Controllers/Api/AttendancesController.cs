@@ -13,11 +13,11 @@ namespace GigHub.Controllers.Api
 	[ApiController]
 	public class AttendancesController : ControllerBase
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public AttendancesController(ApplicationContext context)
+		public AttendancesController(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		[HttpPost]
@@ -25,7 +25,7 @@ namespace GigHub.Controllers.Api
 		{
 			var userId = User.GetUserId();
 
-			if (_context.Attendances.Any(a => a.AttendeeId == userId && a.GigId == dto.GigId))
+			if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.GigId == dto.GigId))
 				return BadRequest("The attendance already exists.");
 
 			var attendance = new Attendance
@@ -34,8 +34,8 @@ namespace GigHub.Controllers.Api
 				AttendeeId = User.GetUserId()
 			};
 
-			_context.Attendances.Add(attendance);
-			_context.SaveChanges();
+			_dbContext.Attendances.Add(attendance);
+			_dbContext.SaveChanges();
 
 			return Ok();
 		}
@@ -44,13 +44,13 @@ namespace GigHub.Controllers.Api
 		public IActionResult DeleteAttendance(int gigId)
 		{
 			var userId = User.GetUserId();
-			var attendance = _context.Attendances.SingleOrDefault(a => a.GigId == gigId && a.AttendeeId == userId);
+			var attendance = _dbContext.Attendances.SingleOrDefault(a => a.GigId == gigId && a.AttendeeId == userId);
 
 			if (attendance == null)
 				return NotFound();
 
-			_context.Attendances.Remove(attendance);
-			_context.SaveChanges();
+			_dbContext.Attendances.Remove(attendance);
+			_dbContext.SaveChanges();
 
 			return Ok(gigId);
 		}

@@ -5,15 +5,15 @@
 		alert("Something failed!");
 	};
 
-	var done = function() {
-		var text = (followButton.text() === "Follow") ? "Following" : "Follow";
+	var done = function () {
+		const text = (followButton.text() === "Follow") ? "Following" : "Follow";
 
 		followButton.text(text);
 	};
 
 	var toggleFollow = function (e) {
 		followButton = $(e.target);
-		var artistId = followButton.attr("data-user-id");
+		const artistId = followButton.attr("data-user-id");
 
 		if (followButton.text() === "Follow")
 			followingService.createFollow(artistId, done, fail);
@@ -21,8 +21,7 @@
 			followingService.deleteFollow(artistId, done, fail);
 	};
 
-	var init = function (container) {
-		//$(container).on("click", ".js-toggle-follow", toggleFollow);
+	const init = function () {
 		$(".js-toggle-follow").click(toggleFollow);
 	};
 

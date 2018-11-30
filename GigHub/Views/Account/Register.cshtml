@@ -1,7 +1,12 @@
-﻿@model GigHub.Web.ViewModels.Account.RegisterViewModel
+﻿@model GigHub.Commands.RegisterCommand
+
+@{
+	ViewData["Title"] = "Register";
+}
 
 <h2>Create a new account</h2>
 <hr />
+
 <div asp-validation-summary="All" class="text-danger"></div>
 <form method="post">
 	<div class="form-group">
@@ -21,5 +26,6 @@
 		<span asp-validation-for="Password" class="text-danger"></span>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary">Register</button>
+	<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>

@@ -2,40 +2,42 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-	<ul class="navbar-nav">
-		<li id="notifications" class="nav-item">
-			<a href="#" class="nav-link">
-				<i class="fas fa-bell"></i>
-				<span class="badge badge-info js-notifications-count"></span>
-			</a>
-		</li>
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				Hello @User.Identity.Name
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a asp-controller="Gigs" asp-action="Mine" class="dropdown-item">My Upcoming gigs</a>
-				<a asp-controller="Gigs" asp-action="Attending" class="dropdown-item">Gigs I'm Going</a>
-				<a asp-controller="Users" asp-action="Following" class="dropdown-item">Artist I'm Following</a>
-				<div class="dropdown-divider"></div>
-				<a asp-controller="Account" asp-action="Logout" class="dropdown-item">Sign out</a>
-			</div>
-		</li>
-	</ul>
+	<form method="post">
+		<ul class="navbar-nav">
+			<li id="notifications" class="nav-item">
+				<a href="#" class="nav-link">
+					<i class="fas fa-bell"></i>
+					<span class="badge badge-info js-notifications-count"></span>
+				</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Hello @User.Identity.Name
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a asp-controller="Gigs" asp-action="Mine" class="dropdown-item">My Upcoming gigs</a>
+					<a asp-controller="Gigs" asp-action="Attending" class="dropdown-item">Gigs I'm Going</a>
+					<a asp-controller="Users" asp-action="Following" class="dropdown-item">Artist I'm Following</a>
+					<div class="dropdown-divider"></div>
+					<button type="submit" asp-controller="Account" asp-action="Logout" class="dropdown-item">Sign out</button>
+				</div>
+			</li>
+		</ul>
+	</form>
 }
 else
 {
 	<ul class="navbar-nav">
 		<li class="nav-item">
-			<a asp-controller="Account" asp-action="Register" class="nav-link">
-				<i class="fas fa-user-plus"></i>
-				Sign up
-			</a>
-		</li>
-		<li class="nav-item">
 			<a asp-controller="Account" asp-action="Login" class="nav-link">
 				<i class="fas fa-user"></i>
 				Sign in
+			</a>
+		</li>
+		<li class="nav-item">
+			<a asp-controller="Account" asp-action="Register" class="nav-link">
+				<i class="fas fa-user-plus"></i>
+				Sign up
 			</a>
 		</li>
 	</ul>

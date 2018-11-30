@@ -12,18 +12,18 @@ namespace GigHub.Controllers.Api
 	[ApiController]
 	public class GigsController : ControllerBase
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public GigsController(ApplicationContext context)
+		public GigsController(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		[HttpDelete("{id}")]
 		public IActionResult Cancel(int id)
 		{
 			var userId = User.GetUserId();
-			var gig = _context.Gigs
+			var gig = _dbContext.Gigs
 				.Include(g => g.Attendances)
 				.ThenInclude(a => a.Attendee)
 				.Single(g => g.Id == id && g.ArtistId == userId);
@@ -33,7 +33,7 @@ namespace GigHub.Controllers.Api
 
 			gig.Cancel();
 
-			_context.SaveChanges();
+			_dbContext.SaveChanges();
 
 			return Ok();
 		}

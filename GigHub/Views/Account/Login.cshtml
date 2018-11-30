@@ -1,8 +1,12 @@
-﻿@model GigHub.Web.ViewModels.Account.LoginViewModel
+﻿@model GigHub.Commands.LogInCommand
+
+@{
+	ViewData["Title"] = "Log In";
+}
 
 <h2>Use a local account to log in</h2>
 <hr />
-<div asp-validation-summary="All" class="text-danger"></div>
+
 <form method="post">
 	<div class="form-group">
 		<label asp-for="Email">Email address</label>
@@ -15,5 +19,6 @@
 		<span asp-validation-for="Password" class="text-danger"></span>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary">Log In</button>
+	<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>

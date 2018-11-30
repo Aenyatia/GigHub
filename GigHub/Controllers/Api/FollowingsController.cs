@@ -13,11 +13,11 @@ namespace GigHub.Controllers.Api
 	[ApiController]
 	public class FollowingsController : ControllerBase
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public FollowingsController(ApplicationContext context)
+		public FollowingsController(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		[HttpPost]
@@ -25,7 +25,7 @@ namespace GigHub.Controllers.Api
 		{
 			var userId = User.GetUserId();
 
-			if (_context.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == dto.FolloweeId))
+			if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == dto.FolloweeId))
 				return BadRequest("The followee already exists.");
 
 			var follow = new Following
@@ -34,8 +34,8 @@ namespace GigHub.Controllers.Api
 				FolloweeId = dto.FolloweeId
 			};
 
-			_context.Followings.Add(follow);
-			_context.SaveChanges();
+			_dbContext.Followings.Add(follow);
+			_dbContext.SaveChanges();
 
 			return Ok();
 		}
@@ -44,13 +44,13 @@ namespace GigHub.Controllers.Api
 		public IActionResult CancelFollowing(string artistId)
 		{
 			var userId = User.GetUserId();
-			var follow = _context.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == artistId);
+			var follow = _dbContext.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == artistId);
 
 			if (follow == null)
 				return NotFound();
 
-			_context.Followings.Remove(follow);
-			_context.SaveChanges();
+			_dbContext.Followings.Remove(follow);
+			_dbContext.SaveChanges();
 
 			return Ok();
 		}

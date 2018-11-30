@@ -1,76 +1,75 @@
-﻿using GigHub.Infrastructure.Persistence.Data;
+﻿using GigHub.Core.Domain;
+using GigHub.Infrastructure.Persistence.Data;
 using GigHub.Infrastructure.Persistence.Identity;
-using GigHub.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using GigHub.Core.Domain;
+using GigHub.Commands;
 
 namespace GigHub.Controllers
 {
 	[Authorize]
 	public class AccountController : Controller
 	{
-		private readonly UserManager<AppUser> _userManager;
-		private readonly SignInManager<AppUser> _signInManager;
-		private readonly ApplicationContext _context;
+		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly ApplicationDbContext _dbContext;
 
-		public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationContext context)
+		public AccountController(
+			UserManager<ApplicationUser> userManager,
+			SignInManager<ApplicationUser> signInManager,
+			ApplicationDbContext dbContext)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		[HttpGet]
 		[AllowAnonymous]
-		public IActionResult Register()
-		{
-			return View();
-		}
+		public IActionResult Register() => View();
 
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel viewModel)
+		public async Task<IActionResult> Register(RegisterCommand command)
 		{
 			if (!ModelState.IsValid)
-				return View(viewModel);
+				return View(command);
 
-			var user = new AppUser
+			var user = new ApplicationUser
 			{
-				UserName = viewModel.Email,
-				Email = viewModel.Email
+				UserName = command.Email,
+				Email = command.Email
 			};
 
-			var identityResult = await _userManager.CreateAsync(user, viewModel.Password);
+			var identityResult = await _userManager.CreateAsync(user, command.Password);
 			if (!identityResult.Succeeded)
 			{
 				foreach (var error in identityResult.Errors)
 					ModelState.AddModelError(error.Code, error.Description);
 
-				return View(viewModel);
+				return View(command);
 			}
 
-			var t = await _userManager.FindByEmailAsync(viewModel.Email);
-			var artist = new User(t.Id, t.UserName);
-			_context.Users.Add(artist);
+			// create local user - need to refactoring
+			var identityUser = await _userManager.FindByEmailAsync(command.Email);
+			var localUser = new User(identityUser.Id, command.Name);
+			_dbContext.Users.Add(localUser);
+			_dbContext.SaveChanges();
 
 			return RedirectToAction("Login");
 		}
 
 		[HttpGet]
 		[AllowAnonymous]
-		public IActionResult Login()
-		{
-			return View();
-		}
+		public IActionResult Login() => View();
 
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(LoginViewModel viewModel)
+		public async Task<IActionResult> Login(LogInCommand viewModel)
 		{
 			if (!ModelState.IsValid)
 				return View(viewModel);
@@ -93,6 +92,7 @@ namespace GigHub.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();

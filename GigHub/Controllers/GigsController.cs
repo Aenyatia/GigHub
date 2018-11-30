@@ -13,11 +13,11 @@ namespace GigHub.Controllers
 	[Authorize]
 	public class GigsController : Controller
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public GigsController(ApplicationContext context)
+		public GigsController(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		[HttpGet]
@@ -25,8 +25,8 @@ namespace GigHub.Controllers
 		{
 			var viewModel = new GigFormViewModel
 			{
-				Genres = _context.Genres.ToList(),
-				Heading = "Add a Gig "
+				Genres = _dbContext.Genres.ToList(),
+				Heading = "Add a Gig"
 			};
 
 			return View("GigForm", viewModel);
@@ -38,7 +38,7 @@ namespace GigHub.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				viewModel.Genres = _context.Genres.ToList();
+				viewModel.Genres = _dbContext.Genres.ToList();
 				return View("GigForm", viewModel);
 			}
 
@@ -50,17 +50,17 @@ namespace GigHub.Controllers
 				Venue = viewModel.Venue
 			};
 
-			_context.Gigs.Add(gig);
-			_context.SaveChanges();
+			_dbContext.Gigs.Add(gig);
+			_dbContext.SaveChanges();
 
 			return RedirectToAction("Mine", "Gigs");
 		}
 
-		[HttpGet("{gigId}")]
+		[HttpGet]
 		public IActionResult Edit(int gigId)
 		{
 			var userId = User.GetUserId();
-			var gig = _context.Gigs
+			var gig = _dbContext.Gigs
 				.Include(g => g.Artist)
 				.Include(g => g.Genre)
 				.SingleOrDefault(g => g.Id == gigId && g.ArtistId == userId);
@@ -70,7 +70,7 @@ namespace GigHub.Controllers
 
 			var viewModel = new GigFormViewModel
 			{
-				Genres = _context.Genres.ToList(),
+				Genres = _dbContext.Genres.ToList(),
 				Venue = gig.Venue,
 				Date = gig.DateTime.ToString("yyyy-MM-dd"),
 				Time = gig.DateTime.ToString("HH:mm"),
@@ -87,12 +87,12 @@ namespace GigHub.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				viewModel.Genres = _context.Genres.ToList();
+				viewModel.Genres = _dbContext.Genres.ToList();
 				return View("GigForm", viewModel);
 			}
 
 			var userId = User.GetUserId();
-			var gig = _context.Gigs
+			var gig = _dbContext.Gigs
 				.Include(g => g.Attendances).ThenInclude(a => a.Attendee)
 				.SingleOrDefault(g => g.Id == viewModel.Id && g.ArtistId == userId);
 
@@ -101,7 +101,7 @@ namespace GigHub.Controllers
 
 			gig.Modify(viewModel.GetDateTime(), viewModel.Venue, viewModel.GenreId);
 
-			_context.SaveChanges();
+			_dbContext.SaveChanges();
 
 			return RedirectToAction("Mine", "Gigs");
 		}
@@ -110,7 +110,7 @@ namespace GigHub.Controllers
 		public IActionResult Mine()
 		{
 			var userId = User.GetUserId();
-			var gigs = _context.Gigs
+			var gigs = _dbContext.Gigs
 				.Where(g => g.ArtistId == userId &&
 							g.DateTime > DateTime.UtcNow &&
 							!g.IsCanceled)
@@ -124,14 +124,14 @@ namespace GigHub.Controllers
 		public IActionResult Attending()
 		{
 			var userId = User.GetUserId();
-			var userUpcomingGigs = _context.Attendances
+			var userUpcomingGigs = _dbContext.Attendances
 				.Where(a => a.AttendeeId == userId)
 				.Select(a => a.Gig)
 				.Include(g => g.Artist)
 				.Include(g => g.Genre)
 				.ToList();
 
-			var userAttendance = _context.Attendances
+			var userAttendance = _dbContext.Attendances
 				.Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.UtcNow)
 				.ToLookup(a => a.GigId);
 
@@ -153,11 +153,11 @@ namespace GigHub.Controllers
 			return RedirectToAction("Index", "Home", new { query = viewModel.SearchTerm });
 		}
 
-		[HttpGet("{gigId}")]
+		[HttpGet]
 		[AllowAnonymous]
 		public IActionResult Details(int gigId)
 		{
-			var gig = _context.Gigs
+			var gig = _dbContext.Gigs
 				.Include(g => g.Artist)
 				.Include(g => g.Genre)
 				.SingleOrDefault(g => g.Id == gigId);
@@ -171,10 +171,10 @@ namespace GigHub.Controllers
 			{
 				var userId = User.GetUserId();
 
-				viewModel.IsAttending = _context.Attendances
+				viewModel.IsAttending = _dbContext.Attendances
 					.SingleOrDefault(a => a.AttendeeId == userId && a.GigId == gigId) != null;
 
-				viewModel.IsFollowing = _context.Followings
+				viewModel.IsFollowing = _dbContext.Followings
 					.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == gig.ArtistId) != null;
 			}
 

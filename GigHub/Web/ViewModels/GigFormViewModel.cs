@@ -1,5 +1,4 @@
 ﻿using GigHub.Core.Domain;
-using GigHub.Web.Validations.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

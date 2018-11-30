@@ -1,9 +1,9 @@
 ﻿@model GigHub.Web.ViewModels.GigsViewModel
 
-<h1>@Model.Heading</h1>
+<h1 class="pl-3">@Model.Heading</h1>
 
 <form asp-controller="Gigs" asp-action="Search" method="post">
-	<div class="form-group col-md-4">
+	<div class="form-group col-lg-4 mt-4">
 		<div class="input-group">
 			<input asp-for="SearchTerm" type="text" class="form-control" placeholder="Search by artist, genre, venue" />
 			<div class="input-group-append">
@@ -36,17 +36,18 @@
 						<span class="badge badge-warning">Canceled</span>
 					}
 				</span>
+
 				<span class="genre">
 					@gig.Genre.Name
 				</span>
 
 				@if (Model.ShowActions && !gig.IsCanceled)
 				{
-					<button data-gig-id="@gig.Id"
-							class="btn
-							@(Model.UserAttendance.Contains(gig.Id) ? "btn-info" : "btn-light")
+					var isGoing = Model.UserAttendance.Contains(gig.Id);
+
+					<button class="btn @(isGoing? "btn-info" : "btn-light")
 							btn-sm js-toggle-attendance" data-gig-id="@gig.Id">
-						Going?
+						@(isGoing ? "Going" : "Going?")
 					</button>
 				}
 			</div>

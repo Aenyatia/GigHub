@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GigHub.Infrastructure.Persistence.Identity
 {
-	public class IdentityContext : IdentityDbContext<AppUser>
+	public class IdentityDbContext : IdentityDbContext<ApplicationUser>
 	{
-		public IdentityContext(DbContextOptions<IdentityContext> options)
+		public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
 			: base(options)
 		{
 		}

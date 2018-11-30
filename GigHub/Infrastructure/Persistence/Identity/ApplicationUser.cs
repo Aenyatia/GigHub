@@ -2,7 +2,7 @@
 
 namespace GigHub.Infrastructure.Persistence.Identity
 {
-	public class AppUser : IdentityUser
+	public class ApplicationUser : IdentityUser
 	{
 	}
 }

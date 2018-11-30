@@ -13,18 +13,18 @@ namespace GigHub.Controllers
 	[Authorize]
 	public class HomeController : Controller
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public HomeController(ApplicationContext context)
+		public HomeController(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		[HttpGet]
 		[AllowAnonymous]
 		public IActionResult Index(string query = null)
 		{
-			var upcomingGigs = _context.Gigs
+			var upcomingGigs = _dbContext.Gigs
 				.Include(g => g.Artist)
 				.Include(g => g.Genre)
 				.Where(g => g.DateTime > DateTime.UtcNow && !g.IsCanceled);
@@ -37,7 +37,7 @@ namespace GigHub.Controllers
 			}
 
 			var userId = User.GetUserId();
-			var userAttendance = _context.Attendances
+			var userAttendance = _dbContext.Attendances
 					.Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.UtcNow)
 					.ToLookup(a => a.GigId);
 

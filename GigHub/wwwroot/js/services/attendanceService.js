@@ -1,24 +1,24 @@
 ﻿var AttendanceService = function () {
-	var createAttendance = function (gigId, done, fail) {
+	const createAttendance = function (gigId, done, fail) {
 		$.ajax({
-				url: "/api/attendances",
-				method: "POST",
-				contentType: "application/json",
-				data: JSON.stringify({
-					gigId: gigId
-				})
+			url: "/api/attendances",
+			method: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({
+				gigId: gigId
 			})
-		.done(done)
-		.fail(fail);
+		})
+			.done(done)
+			.fail(fail);
 	};
 
-	var deleteAttendance = function (gigId, done, fail) {
+	const deleteAttendance = function (gigId, done, fail) {
 		$.ajax({
-				url: "/api/attendances/" + gigId,
-				method: "DELETE"
-			})
-		.done(done)
-		.fail(fail);
+			url: `/api/attendances/${gigId}`,
+			method: "DELETE"
+		})
+			.done(done)
+			.fail(fail);
 	};
 
 	return {

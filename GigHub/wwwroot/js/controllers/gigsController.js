@@ -6,14 +6,14 @@
 	};
 
 	var done = function () {
-		var text = (button.text() === "Going") ? "Going?" : "Going";
+		const text = (button.text() === "Going") ? "Going?" : "Going";
 
 		button.toggleClass("btn-info").toggleClass("btn-light").text(text);
 	};
 
 	var toggleAttendance = function (e) {
 		button = $(e.target);
-		var gigId = button.attr("data-gig-id");
+		const gigId = button.attr("data-gig-id");
 
 		if (button.hasClass("btn-light"))
 			attendanceService.createAttendance(gigId, done, fail);
@@ -21,7 +21,7 @@
 			attendanceService.deleteAttendance(gigId, done, fail);
 	};
 
-	var init = function (container) {
+	const init = function (container) {
 		$(container).on("click", ".js-toggle-attendance", toggleAttendance);
 	};
 

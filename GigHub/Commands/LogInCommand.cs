@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GigHub.Web.ViewModels.Account
+namespace GigHub.Commands
 {
-	public class LoginViewModel
+	public class LogInCommand
 	{
 		[Required]
 		[EmailAddress]

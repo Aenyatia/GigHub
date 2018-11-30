@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GigHub.Infrastructure.Persistence.Data
 {
-	public class ApplicationContext : DbContext
+	public class ApplicationDbContext : DbContext
 	{
 		public DbSet<Gig> Gigs { get; set; }
 		public DbSet<User> Users { get; set; }
@@ -14,15 +14,13 @@ namespace GigHub.Infrastructure.Persistence.Data
 		public DbSet<Notification> Notifications { get; set; }
 		public DbSet<UserNotification> UserNotifications { get; set; }
 
-		public ApplicationContext(DbContextOptions<ApplicationContext> options)
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
-
 			modelBuilder.ApplyConfiguration(new GigConfiguration());
 			modelBuilder.ApplyConfiguration(new UserConfiguration());
 			modelBuilder.ApplyConfiguration(new GenreConfiguration());

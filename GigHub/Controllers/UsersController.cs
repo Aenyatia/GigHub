@@ -8,17 +8,17 @@ namespace GigHub.Controllers
 {
 	public class UsersController : Controller
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public UsersController(ApplicationContext context)
+		public UsersController(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
 		public IActionResult Following()
 		{
 			var userId = User.GetUserId();
-			var users = _context.Followings
+			var users = _dbContext.Followings
 				.Where(f => f.FollowerId == userId)
 				.Select(f => f.Followee)
 				.ToList();

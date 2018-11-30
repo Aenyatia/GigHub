@@ -16,12 +16,12 @@ namespace GigHub.Controllers.Api
 	[ApiController]
 	public class NotificationsController : ControllerBase
 	{
-		private readonly ApplicationContext _context;
+		private readonly ApplicationDbContext _dbContext;
 		private readonly IMapper _mapper;
 
-		public NotificationsController(ApplicationContext context, IMapper mapper)
+		public NotificationsController(ApplicationDbContext dbContext, IMapper mapper)
 		{
-			_context = context;
+			_dbContext = dbContext;
 			_mapper = mapper;
 		}
 
@@ -29,7 +29,7 @@ namespace GigHub.Controllers.Api
 		public IActionResult GetNewNotifications()
 		{
 			var userId = User.GetUserId();
-			var notifications = _context.UserNotifications
+			var notifications = _dbContext.UserNotifications
 				.Where(un => un.UserId == userId && !un.IsRead)
 				.Select(un => un.Notification)
 				.Include(n => n.Gig.Artist)
@@ -42,13 +42,13 @@ namespace GigHub.Controllers.Api
 		public IActionResult MarkAsRed()
 		{
 			var userId = User.GetUserId();
-			var notifications = _context.UserNotifications
+			var notifications = _dbContext.UserNotifications
 				.Where(un => un.UserId == userId && !un.IsRead)
 				.ToList();
 
 			notifications.ForEach(n => n.Read());
 
-			_context.SaveChanges();
+			_dbContext.SaveChanges();
 
 			return Ok();
 		}
