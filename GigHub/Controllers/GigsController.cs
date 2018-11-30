@@ -147,6 +147,7 @@ namespace GigHub.Controllers
 		}
 
 		[HttpPost]
+		[AllowAnonymous]
 		public IActionResult Search(GigsViewModel viewModel)
 		{
 			return RedirectToAction("Index", "Home", new { query = viewModel.SearchTerm });
